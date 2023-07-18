@@ -1,0 +1,104 @@
+# #MYSQL Container + REST API Container + React Container + volume (internal docker hdd)
+# #NOTE: for hot-reloading React, use => "start": "WATCHPACK_POLLING=true react-scripts start" in package.json
+
+# services:
+#   # vacations database (mysql service):
+#   vacations-database-service:
+#     #Image name to create from DockerFile
+#     image: liorzadok/vacations-database-service-image:1.0
+
+#     # Build the image (if not exists) from specified Dockerfile location:
+#     build: ./Database
+
+#     # Container name:
+#     container_name: vacations-database-container
+
+#     #port binding [host:container]
+#     ports:
+#       - 3307:3306
+
+#     #Environment variables needed by MySql:
+#     environment:
+#       MYSQL_HOST: localhost #internally for the container
+#       MYSQL_DATABASE: vacations
+#       MYSQL_USER: "root"
+#       MYSQL_PASSWORD: 12345678
+#       MYSQL_ROOT_PASSWORD: 12345678 #needed by mysql image
+
+#     #On crash - restart container, unless manually stopped:
+#     restart: unless-stopped
+
+#     #Database volumes:
+#     volumes:
+#       - vacations:/var/lib/mysql
+
+#   #---------------------------------------------------------------
+
+#   # vacations backend service
+#   vacations-backend-service:
+#     #Image name to create from Dockerfile:
+#     image: liorzadok/vacations-backend-service-image:1.0
+
+#     #Build the image (if not exists) from a specifiec dockerfile location:
+#     build: ./backend
+
+#     #container name
+#     container_name: vacations-backend-container
+
+#     #Port binding (host:container):
+#     ports:
+#       - 4000:5000
+
+#     #Environment variables needed by this service:
+#     environment:
+#       PORT: 5000
+#       MYSQL_HOST: vacations-database-service #Above database service name is the host name
+#       MYSQL_DATABASE: vacations
+#       MYSQL_USER: "root"
+#       MYSQL_PASSWORD: 12345678
+
+#     #On crash - restart container, unless manually stopped:
+#     restart: unless-stopped
+
+#     #Host bolume for mounting backend development files to backend container
+#     volumes:
+#       - ./backend:/app
+
+#     # On which service we are depending on (starting/stopping order):
+#     depends_on:
+#       - vacations-database-service
+#   #---------------------------------------------------------------
+
+#   # vacations frontend service
+#   vacations-frontend-service:
+#     #Image name to create  from dockerfile:
+#     image: liorzadok/vacations-frontend-service-image:1.0
+
+#     #Build the image (if not exists) from specified Dockerfile location:
+#     build: ./frontend
+
+#     #Container name:
+#     container_name: vacations-frontend-container
+
+#     #Port binding (host:container):
+#     ports:
+#       - 3000:3000
+
+#     #On crash - restart container, unless manually stopped:
+#     restart: unless-stopped
+
+#     #Host volume for mounting Frontend development files to Frontend container
+#     volumes:
+#       - ./frontend:/app
+
+#     #On which service we are depending on (start/stopping order):
+#     depends_on:
+#       - vacations-backend-service
+
+# #---------------------------------------------------------------
+
+# # volumes
+# volumes:
+#   vacations:
+# #for running docker-compse , run the command inside the docker-compose.yml file
+# #docker-compose up -d

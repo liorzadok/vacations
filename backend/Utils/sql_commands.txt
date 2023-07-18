@@ -1,0 +1,54 @@
+
+CREATE TABLE IF NOT EXISTS `my_vacations`.`users` (
+  `user_code` INT NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(45) NOT NULL,
+  `last_name` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(45) NOT NULL,
+  `password` VARCHAR(45) NOT NULL,
+  `isAdmin` TINYINT NOT NULL,
+  PRIMARY KEY (`user_code`));
+
+
+CREATE TABLE IF NOT EXISTS `my_vacations`.`vacations` (
+  `vacation_code` INT NOT NULL AUTO_INCREMENT,
+  `destination` VARCHAR(45) NOT NULL,
+  `description` VARCHAR(255) NOT NULL,
+  `start_date` VARCHAR(45) NOT NULL,
+  `end_date` VARCHAR(45) NOT NULL,
+  `price` INT NOT NULL,
+  `img` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`vacation_code`));
+
+CREATE TABLE IF NOT EXISTS `my_vacations`.`followers` (
+  `user_code` INT NOT NULL AUTO_INCREMENT,
+  `vacation_code` INT NOT NULL,
+  INDEX `user_code_idx` (`user_code` ASC) VISIBLE,
+  INDEX `vacation_code_idx` (`vacation_code` ASC) VISIBLE,
+  CONSTRAINT `user_code`
+    FOREIGN KEY (`user_code`)
+    REFERENCES `my_vacations`.`users` (`user_code`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `vacation_code`
+    FOREIGN KEY (`vacation_code`)
+    REFERENCES `my_vacations`.`vacations` (`vacation_code`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
+
+
+INSERT INTO `my_vacations`.`users` (`first_name`, `last_name`, `email`, `password`, `isAdmin`) VALUES ('lior', 'zadok', 'liorzadok7@gmail.com', '12345', '1');
+
+
+INSERT INTO `my_vacations`.`vacations` (`destination`, `description`, `start_date`, `end_date`, `price`, `img`) VALUES ('Paris', 'fun in the Eiffel Tower!', '01.07.23', '07.07.23', '1560', 'img1');
+
+
+SELECT * FROM my_vacations.users;
+
+UPDATE `my_vacations`.`vacations` SET `destination` = 'Warsaw', `description` = 'Explore Warsaw', `start_date` = '27.08.23', `end_date` = '03.09.23', `price` = '1200', `img` = 'img4' WHERE (`vacation_code` = '6');
+
+
+//updates number of likes in every vacation:
+
+UPDATE `my_vacations`.`vacations` SET `likes` = `likes`+'1' WHERE (`vacation_code` = '1');
+
+//
